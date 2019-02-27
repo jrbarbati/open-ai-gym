@@ -68,7 +68,7 @@ class QLearningAgent():
 
 		denominator = highest - lowest
 		descretized = observation - lowest / denominator
-
+		
 		return tuple([int(self.number_of_states * num) for num in descretized])
 
 	def best_action(self, actions):
