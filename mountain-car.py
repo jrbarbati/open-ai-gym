@@ -1,6 +1,6 @@
 import gym
 import sys
-from q_learning_agent import *
+from qlearningagent import *
 
 class MountainCarAgent(QLearningAgent):
 	def is_success(self, total_reward):
@@ -9,7 +9,7 @@ class MountainCarAgent(QLearningAgent):
 
 def main(args):
 	env = gym.make('MountainCar-v0')
-	mountain_car_agent = MountainCarAgent(epsilon=0.9, epsilon_decay=0.99, epsilon_min=0.05, alpha=0.9, alpha_decay=0.999, alpha_min=0.05, gamma=1)
+	mountain_car_agent = MountainCarAgent(epsilon=0.3, alpha=0.5, gamma=0.95)
 
 	for episode in range(int(args[0])):
 		print('Running {}/{}'.format(episode + 1, args[0]))
