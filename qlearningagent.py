@@ -1,4 +1,5 @@
 import random
+from argparse import ArgumentParser
 from pprint import pprint
 
 class QLearningAgent():
@@ -107,6 +108,29 @@ class QLearningAgent():
 			numbers[i] = max([minimum, min([numbers[i], maximum])])
 
 		return numbers
+
+
+def arg_parser():
+	arg_parser = ArgumentParser()
+
+	arg_parser.add_argument('-e', '--epsilon', help='Sets exploration rate of Q-Learning Agent.', type=float, default=0.2)
+	arg_parser.add_argument('-ed', '--epsilon-decay', help='Sets decay of exploration rate of Q-Learning Agent.', type=float, default=1)
+	arg_parser.add_argument('-em', '--epsilon-min', help='Sets mininum value for exploration rate of Q-Learning Agent.', type=float, default=0)
+
+	arg_parser.add_argument('-a', '--alpha', help='Sets learning rate of Q-Learning Agent.', type=float, default=0.5)
+	arg_parser.add_argument('-ad', '--alpha-decay', help='Sets decay of learning rate of Q-Learning Agent.', type=float, default=1)
+	arg_parser.add_argument('-am', '--alpha-min', help='Sets mininum value for learning rate of Q-Learning Agent.', type=float, default=0.5)
+
+	arg_parser.add_argument('-g', '--gamma', help='Sets future reward discount of Q-Learning Agent.', type=float, default=1)
+	arg_parser.add_argument('-gd', '--gamma-decay', help='Sets decay of future reward discount of Q-Learning Agent.', type=float, default=1)
+	arg_parser.add_argument('-gm', '--gamma-min', help='Sets mininum value for future reward discount of Q-Learning Agent.', type=float, default=0)
+
+	arg_parser.add_argument('-s', '--num-of-states', help='Limits the number of buckets a state can fit into.', type=int, default=100)
+
+	arg_parser.add_argument('-ne', '--num-of-episodes', help='Number of episodes that will run', type=int, default=1000)
+
+	return arg_parser
+
 
 class NotImplementedError(Exception):
 	pass

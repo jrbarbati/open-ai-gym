@@ -7,14 +7,26 @@ class MountainCarAgent(QLearningAgent):
 		return total_reward > -200
 
 
-def main(args):
+def main():
+	args = arg_parser().parse_args()
 	env = gym.make('MountainCar-v0')
-	mountain_car_agent = MountainCarAgent(epsilon=0.3, alpha=0.5, gamma=0.9)
+	mountain_car_agent = MountainCarAgent(
+		epsilon=args.epsilon, 
+		epsilon_decay=args.epsilon_decay,
+		epsilon_min=args.epsilon_min,
+		alpha=args.alpha,
+		alpha_decay=args.alpha_decay,
+		alpha_min=args.alpha_min,
+		gamma=args.gamma,
+		gamma_decay=args.gamma_decay,
+		gamma_min=args.gamma_min,
+		number_of_states=args.num_of_states
+	)
 
-	for episode in range(int(args[0])):
-		print('Running {}/{}'.format(episode + 1, args[0]))
+	for episode in range(args.num_of_episodes):
+		print('Running {}/{}'.format(episode + 1, args.num_of_episodes))
 		mountain_car_agent.run_episode(env)
 
 
 if __name__ == '__main__':
-	main(sys.argv[1:])
+	main()
