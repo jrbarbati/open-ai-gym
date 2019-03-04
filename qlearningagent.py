@@ -22,9 +22,9 @@ class QLearningAgent():
 		actions = 0
 		episodic_reward = 0
 
-		self.epsilon = max([self.epsilon_min, self.epsilon * self.epsilon_decay])
-		self.alpha = max([self.alpha_min, self.alpha * self.alpha_decay])
-		self.gamma = max([self.gamma, self.gamma * self.gamma_decay])
+		self.epsilon = self.hyperparameter(self.epsilon, self.epsilon_decay, self.epsilon_min)
+		self.alpha = self.hyperparameter(self.alpha, self.alpha_decay, self.alpha_min)
+		self.gamma = self.hyperparameter(self.gamma, self.gamma_decay, self.gamma_min)
 
 		while True:
 			if render:
@@ -40,8 +40,8 @@ class QLearningAgent():
 
 			new_state = self.descretize(observation, env)
 
-			old_q = self.q(current_state, action, env)
-			new_q = old_q + (self.alpha * (reward + (self.gamma * max(self.q(new_state, None, env))) - old_q))
+			old_q = self.q(current_state, env, action=action)
+			new_q = old_q + (self.alpha * (reward + (self.gamma * max(self.q(new_state, env))) - old_q))
 
 			self.update_q(current_state, action, new_q)
 
@@ -57,11 +57,14 @@ class QLearningAgent():
 	def is_success(self, total_reward):
 		raise NotImplementedError()
 
+	def hyperparameter(self, param, param_decay, param_min):
+		return max([param_min, param * param_decay])
+
 	def choose_action(self, state, env):
 		if random.random() < self.epsilon:
 			return env.action_space.sample()
 		else:
-			return self.best_action(self.q(state, None, env))
+			return self.best_action(self.q(state, env))
 
 	def descretize(self, observation, env):
 		highest = self.finite(env.observation_space.high)
@@ -86,7 +89,7 @@ class QLearningAgent():
 
 		return max_index
 
-	def q(self, state, action, env):
+	def q(self, state, env, action=None):
 		if state not in self.q_table:
 			self.q_table[state] = [0] * env.action_space.n
 
