@@ -54,6 +54,8 @@ class QLearningAgent():
 
 			actions += 1
 
+		return episodic_reward
+
 	def is_success(self, total_reward):
 		raise NotImplementedError()
 
@@ -129,11 +131,45 @@ def arg_parser():
 	arg_parser.add_argument('-gm', '--gamma-min', help='Sets mininum value for future reward discount of Q-Learning Agent.', type=float, default=0)
 
 	arg_parser.add_argument('-s', '--num-of-states', help='Limits the number of buckets a state can fit into.', type=int, default=100)
-
 	arg_parser.add_argument('-ne', '--num-of-episodes', help='Number of episodes that will run', type=int, default=1000)
+
+	arg_parser.add_argument('-r', '--render', help='Will render the graphics', default=False, action='store_true')
 
 	return arg_parser
 
 
 class NotImplementedError(Exception):
 	pass
+
+
+class Queue:
+	def __init__(self, max_length=10000000):
+		self.max_length = max_length
+		self.queue = []
+
+	def push(self, value):
+		""" 
+		Lazily adds value to the queue
+		If max_length is reached, we remove from head of queue, then add to tail
+		"""
+		if self.size() >= self.max_length:
+			self.pop()
+		self.queue.append(value)
+
+	def pop(self):
+		""" Removes from the head of the queue """
+		return self.queue.pop(0)
+
+	def peek(self):
+		""" Shows the value at the head of the queue, but doesn't remove it """
+		return self.queue[0]
+
+	def size(self):
+		return len(self.queue)
+
+	def is_empty(self):
+		return len(self.queue) == 0
+
+	def avg(self):
+		return sum(self.queue) / self.size() if not self.is_empty() else 0
+

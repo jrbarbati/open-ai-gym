@@ -25,7 +25,7 @@ def main():
 
 	for episode in range(args.num_of_episodes):
 		print('Running {}/{}'.format(episode + 1, args.num_of_episodes))
-		mountain_car_agent.run_episode(env)
+		mountain_car_agent.run_episode(env, render=args.render)
 
 
 if __name__ == '__main__':

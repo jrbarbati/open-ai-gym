@@ -4,7 +4,7 @@ from qlearningagent import *
 
 class CartpoleAgent(QLearningAgent):
 	def is_success(self, total_reward):
-		return total_reward >= 190
+		return False
 
 
 def main():
@@ -23,13 +23,19 @@ def main():
 		number_of_states=args.num_of_states
 	)
 
+	rewards = Queue(max_length=100)
+
 	for episode in range(args.num_of_episodes):
 		print('Running {}/{}'.format(episode + 1, args.num_of_episodes))
-		cartpole_agent.run_episode(env)
+		reward = cartpole_agent.run_episode(env, render=args.render)
+
+		rewards.push(reward)
+		print('Average Reward: {}'.format(rewards.avg()))
+
+		if rewards.avg() >= 190.0:
+			print('\n\n\n\t CartPole-v1 solved in {} episodes\n\n'.format(episode + 1))
+			return
 
 
 if __name__ == '__main__':
-	try:
-		main()
-	except Exception as error:
-		print(error)        
+	main()      
