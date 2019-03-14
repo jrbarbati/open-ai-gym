@@ -2,6 +2,11 @@ import random
 from argparse import ArgumentParser
 from pprint import pprint
 
+
+def seed(seed):
+	random.seed(seed)
+
+
 class QLearningAgent():
 	def __init__(self, epsilon=0.2, epsilon_decay=1, epsilon_min=0, alpha=0.5, alpha_decay=1, alpha_min=0.5, gamma=1, gamma_decay=1, gamma_min=0, number_of_states=100):
 		self.q_table = {}
@@ -15,7 +20,6 @@ class QLearningAgent():
 		self.gamma_decay = gamma_decay
 		self.gamma_min = gamma_min
 		self.number_of_states = number_of_states
-		random.seed(0)
 
 	def run_episode(self, env, render=True, silent=False):
 		observation = env.reset()

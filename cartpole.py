@@ -25,6 +25,8 @@ def main():
 
 	rewards = Queue(max_length=100)
 
+	seed(0)
+
 	for episode in range(args.num_of_episodes):
 		print('Running {}/{}'.format(episode + 1, args.num_of_episodes))
 		reward = cartpole_agent.run_episode(env, render=args.render)
